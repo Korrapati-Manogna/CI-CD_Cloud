@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: support-copilot-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - HINDSIGHT_API_KEY=${HINDSIGHT_API_KEY}
+      - HINDSIGHT_BASE_URL=${HINDSIGHT_BASE_URL:-https://api.hindsight.vectorize.io}
+      - HINDSIGHT_BANK_ID=${HINDSIGHT_BANK_ID:-Demo}
+      - LLM_PRIMARY_MODEL=${LLM_PRIMARY_MODEL:-openai/gpt-oss-120b}
+      - LLM_FALLBACK_MODEL=${LLM_FALLBACK_MODEL:-qwen/qwen3-32b}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: support-copilot-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
