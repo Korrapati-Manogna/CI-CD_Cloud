@@ -125,7 +125,6 @@ def get_default_order_details(cust_id: str, label: str) -> OrderDetails:
 
 
 def load_customers_into_cache():
-    global _CUSTOMERS_CACHE, _RISK_CACHE
     if not FILTERED_CUSTOMERS_FILE.exists():
         logger.warning(f"Data file {FILTERED_CUSTOMERS_FILE} not found. Awaiting pipeline run.")
         return
